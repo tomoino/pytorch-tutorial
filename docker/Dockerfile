@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:latest
+FROM ubuntu:18.04
 
 ARG USERNAME=duser
 ENV DEBIAN_FRONTEND=noninteractive
@@ -13,13 +13,13 @@ RUN apt-get update && \
         tree \
         vim \
         wget \
-        build-essential \
+        build-essential && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/apk/*
+		rm -rf /var/lib/apt/lists/* && \
+		rm -rf /var/cache/apk/
 
 # python
-COPY docker/requirements.txt $WORK_PATH/docker/
+COPY requirements.txt $WORK_PATH/docker/
 ENV PYTHONPATH "/workspace:${PYTHONPATH}"
 ENV PIP_OPTIONS "--no-cache-dir --progress-bar off"
 RUN pip3 install -U pip && \
@@ -29,8 +29,7 @@ RUN pip3 install -U pip && \
 # duser setting
 ARG USER_ID
 ARG GROUP_ID
-RUN addgroup --gid $GROUP_ID $USERNAME && \
-    adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USERNAME && \
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USERNAME && \
     adduser $USERNAME sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER $USERNAME

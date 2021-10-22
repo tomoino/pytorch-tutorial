@@ -1,0 +1,15 @@
+version: '3'
+services:
+  jupyterlab:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    container_name: "jupyterlab"
+    ports:
+      - 18885:18885
+    volumes:
+    - ..:/workspace
+    command: jupyter lab --port 18885 --ip=0.0.0.0 --allow-root --NotebookApp.token=''
