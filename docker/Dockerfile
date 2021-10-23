@@ -13,7 +13,8 @@ RUN apt-get update && \
         tree \
         vim \
         wget \
-        build-essential && \
+        build-essential \
+        python3-pip  && \
     apt-get clean && \
 		rm -rf /var/lib/apt/lists/* && \
 		rm -rf /var/cache/apk/
@@ -29,7 +30,8 @@ RUN pip3 install -U pip && \
 # duser setting
 ARG USER_ID
 ARG GROUP_ID
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USERNAME && \
+RUN groupadd --gid $GROUP_ID -o $USERNAME && \
+    adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID $USERNAME && \
     adduser $USERNAME sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER $USERNAME

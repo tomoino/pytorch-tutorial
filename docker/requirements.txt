@@ -3,3 +3,4 @@ torchvision==0.8.2
 plotly==5.2.1
 jupyterlab>=3
 ipywidgets>=7.6
+pandas
